@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Build the Athlete Plate</title>
+<style>
+:root{--g:#168a5f;--g2:#0e5e42;--o:#f28c28;--bg:#eef6f1}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#1f2d27;line-height:1.45}
+header{background:linear-gradient(135deg,var(--g2),var(--g) 60%,#35b58a);color:#fff;padding:26px 20px 30px;text-align:center}
+header h1{margin:0;font-size:2em;letter-spacing:.5px}
+header p{margin:6px 0 0;opacity:.95}
+main{max-width:1000px;margin:auto;padding:14px}
+.card{background:#fff;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 3px 12px #0b3d2a18}
+h2.sec{margin:0 0 10px;color:var(--g2);font-size:1.25em}
+input[type=text]{width:100%;padding:10px;border:2px solid #cfe3d8;border-radius:10px;font:inherit}
+input[type=text]:focus{outline:none;border-color:var(--g)}
+.scenario{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch}
+.scenario .txt{flex:2;min-width:260px}
+.pill{flex:1;min-width:150px;background:#fff4e5;border:2px solid #ffd9a8;border-radius:14px;text-align:center;padding:12px}
+.pill b{display:block;font-size:1.6em;color:#c25e00}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;position:relative;padding:8px 8px 8px 46px;margin:4px 0}
+.steps li::before{content:counter(s);position:absolute;left:4px;top:6px;width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+table{border-collapse:collapse;width:100%;font-size:.92em;overflow:hidden;border-radius:10px}
+th{background:var(--g);color:#fff;text-align:left;padding:8px}
+td{padding:8px;border-bottom:1px solid #dcebe3}
+tr:nth-child(even) td{background:#f5faf7}
+#bank{position:sticky;top:0;z-index:10;background:#fff;padding:12px 14px;border-radius:0 0 16px 16px;box-shadow:0 6px 16px #0b3d2a30;border-bottom:4px solid var(--g)}
+#bank .hdr{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:center}
+.legend span,.tag{padding:3px 10px;border-radius:12px;margin-right:4px;font-size:.78em;font-weight:600}
+.tabs button{border:2px solid var(--g);background:#fff;color:var(--g);border-radius:16px;padding:3px 12px;margin:3px 2px;cursor:pointer;font-weight:600}
+.tabs button.on{background:var(--g);color:#fff}
+#foods{max-height:120px;overflow-y:auto;margin-top:4px}
+.food{display:inline-block;padding:6px 12px;margin:3px;border-radius:20px;cursor:grab;user-select:none;border:2px solid transparent;font-size:.93em;box-shadow:0 1px 2px #0002;transition:transform .1s}
+.food:hover{transform:translateY(-2px)}
+.carb{background:#ffe3a0}.protein{background:#ffbfbf}.mix{background:#bfe3f7}.veg{background:#bdeebd}.fat{background:#dccdf6}
+.meal{border-left:8px solid var(--g);position:relative}
+.meal.done{border-left-color:#2fb36b;background:linear-gradient(90deg,#f1fbf5,#fff 30%)}
+.meal h2{margin:0;font-size:1.2em;color:var(--g2)}
+.time{display:inline-block;background:#fff4e5;color:#b35500;font-weight:700;border-radius:10px;padding:3px 10px;margin:6px 0;font-size:.9em}
+.goal{margin:4px 0}
+.need{margin:6px 0 8px;font-size:.86em}
+.drop{min-height:72px;border:3px dashed #a8cdbb;border-radius:14px;padding:8px;background:#f9fdfb;transition:.15s}
+.drop.over{background:#d6f3e4;border-color:var(--g)}
+.drop.ready{border-color:var(--o);background:#fffaf2}
+.drop .food{cursor:pointer}.drop .food:hover::after{content:" ✕";color:#c00;font-weight:700}
+.ph{color:#7a978a;font-style:italic}
+.fb{margin-top:10px;padding:8px 12px;border-radius:10px;font-size:.93em;background:#fff6dc;border:1px solid #f3dc9a}
+.fb.ok{background:#e0f7e9;border-color:#a6dfbb}
+.cat{font-size:.85em;margin-top:8px}
+button.btn{border:0;border-radius:10px;padding:11px 20px;cursor:pointer;font-size:1em;font-weight:700;margin:3px}
+.main{background:var(--g);color:#fff}.alt{background:#fff;color:var(--g);border:2px solid var(--g)!important}
+#bar{height:14px;background:#dcebe3;border-radius:8px;overflow:hidden;margin:8px 0}
+#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#35b58a,#f2b705);transition:width .4s}
+@media print{#bank,.noprint{display:none}body{background:#fff}.card{box-shadow:none;border:1px solid #ccc}}
+</style></head><body>
+<header><h1>🏃 Build the Athlete Plate</h1><p>Quality • Quantity • Timing for an Endurance Athlete</p></header>
+<main>
+
+<div class="card"><h2 class="sec">👥 Your Group</h2>
+<input type="text" placeholder="Type your group member names here"></div>
+
+<div class="card"><h2 class="sec">📖 The Scenario</h2>
+<div class="scenario">
+<div class="txt">You are the nutrition planner for a <b>college endurance runner</b> (70 kg / 154 lb). The athlete will complete a <b>2-hour run at 7:00 AM</b>.<br><br>
+Your job: build meals for the whole day with the <b>right foods</b> (quality), at the <b>right time</b> (timing), so the athlete gets enough <b>carbohydrates, protein, and healthy fats</b>.</div>
+<div class="pill">⏱️<b>7:00 AM</b>2-hour run</div>
+<div class="pill">🍞<b>420–700 g</b>carbs per day<br>🍗 <b>84–119 g</b> protein per day</div>
+</div></div>
+
+<div class="card"><h2 class="sec">🧭 How To Do This Activity</h2>
+<ol class="steps">
+<li><b>Read the timing guide</b> below. It tells you what kind of food belongs at each time.</li>
+<li><b>Pick foods from the Food Bank</b> at the top of the page. Colors show the nutrient type: carb, protein, carb + protein, veg/fruit, or fat.</li>
+<li><b>Drag each food into a meal box.</b> On a phone or tablet, tap the food first, then tap the meal box. Tap a food in a meal to remove it.</li>
+<li><b>Read the feedback</b> under each meal. A yellow ⚠️ tells you what is missing. A green ✅ means the meal fits its goal.</li>
+<li><b>Click "Check My Whole Day"</b> at the bottom. When all meals are green, copy your plates onto the whiteboard with pictures or drawings.</li>
+</ol>
+<p style="margin:8px 0 0"><b>Remember:</b> you don't need to calculate grams. Just make sure each meal matches its timing and key nutrients.</p></div>
+
+<div class="card"><h2 class="sec">⏰ Timing Guide</h2>
+<table><tr><th>Time</th><th>Goal</th><th>Key Nutrients</th></tr>
+<tr><td>1–2 hrs before exercise</td><td>Quick energy</td><td>Mostly carbohydrates</td></tr>
+<tr><td>During long exercise (&gt;90 min)</td><td>Maintain blood glucose</td><td>Small amounts of carbohydrate sources</td></tr>
+<tr><td>Within 60 min after exercise</td><td>Recovery</td><td>Carbohydrate + protein</td></tr>
+<tr><td>Rest of day</td><td>Replenish energy stores</td><td>Balanced meals</td></tr></table>
+<p style="margin:10px 0 0;font-size:.92em">💡 <b>Tips:</b> Right before the run, choose foods that digest quickly (go easy on fat, protein, and fiber). A balanced plate has a <b>carb</b>, a <b>protein</b>, a <b>fruit or vegetable</b>, and a <b>healthy fat</b>.</p></div>
+
+<div id="bank"><div class="hdr"><b>🍽️ Food Bank</b>
+<div class="legend"><span class="carb">Carb</span><span class="protein">Protein</span><span class="mix">Carb + Protein</span><span class="veg">Veg/Fruit</span><span class="fat">Healthy Fat</span></div></div>
+<div class="tabs" id="tabs"></div><div id="foods"></div></div>
+
+<div class="card" style="padding:12px"><b>Progress:</b> <span id="prog">0 of 6 meals complete</span><div id="bar"><i></i></div></div>
+<div id="meals"></div>
+
+<div class="card noprint"><h2 class="sec">✅ Finished?</h2>
+<button class="btn main" onclick="checkAll()">Check My Whole Day</button>
+<button class="btn alt" onclick="window.print()">🖨️ Print</button>
+<button class="btn alt" onclick="location.reload()">↺ Start Over</button>
+<div id="result" style="margin-top:10px"></div>
+<p style="font-size:.92em;color:#46695a;margin-bottom:0">🎨 Last step: copy your meals onto the whiteboard and add pictures or drawings of each plate.</p></div>
+</main>
+<script>
+const FOODS=[
+["Banana","carb"],["White toast","carb"],["Honey","carb"],["Jam","carb"],["Bagel","carb"],["Applesauce","carb"],["Sports drink","carb"],["Pretzels","carb"],["Rice cakes","carb"],["Fruit juice","carb"],["Raisins","carb"],["Energy chews","carb"],
+["Oatmeal","carb"],["Whole-grain pasta","carb"],["Brown rice","carb"],["White rice","carb"],["Sweet potato","carb"],["Quinoa","carb"],["Whole-wheat bread","carb"],["Tortilla","carb"],
+["Chocolate milk","mix"],["Greek yogurt + granola","mix"],["Smoothie (milk + fruit)","mix"],["Peanut butter sandwich","mix"],["Turkey sandwich","mix"],["Cereal with milk","mix"],
+["Eggs","protein"],["Chicken breast","protein"],["Salmon","protein"],["Lean beef","protein"],["Tofu","protein"],["Black beans","protein"],["Lentils","protein"],["Greek yogurt","protein"],["Cottage cheese","protein"],["Tuna","protein"],
+["Orange","veg"],["Berries","veg"],["Apple","veg"],["Broccoli","veg"],["Spinach salad","veg"],["Carrots","veg"],["Bell peppers","veg"],["Green beans","veg"],["Mixed veggies","veg"],
+["Avocado","fat"],["Olive oil","fat"],["Almonds","fat"],["Walnuts","fat"],["Peanut butter","fat"],["Chia seeds","fat"]
+];
+const MEALS=[
+{id:"pre",t:"🌅 Pre-Run Fuel",time:"1–2 hours before the run (5:00–6:00 AM)",goal:"Quick energy. Mostly carbohydrates.",need:["carb"],tip:"Pick easy-to-digest carbs. Skip heavy protein and fat."},
+{id:"during",t:"🏃 During the Run",time:"During the 2-hour run (after about 90 min)",goal:"Maintain blood glucose with small amounts of carbohydrate.",need:["carb"],tip:"Choose 1–3 small, portable carb items."},
+{id:"post",t:"🥤 Post-Run Recovery",time:"Within 60 minutes after the run (by 8:00 AM)",goal:"Recovery. Carbohydrate + protein.",need:["carb","protein"],tip:"You need BOTH a carb and a protein (a carb + protein food counts for both)."},
+{id:"lunch",t:"🥗 Lunch Plate",time:"Rest of day (about 12:00–1:00 PM)",goal:"Balanced meal to replenish energy.",need:["carb","protein","veg","fat"],tip:"Include a carb, protein, veg/fruit, and healthy fat."},
+{id:"snack",t:"🍎 Afternoon Snack",time:"Rest of day (about 3:00–4:00 PM)",goal:"Maintain energy levels.",need:["carb"],tip:"Carbs keep energy up. Add a little protein if you like."},
+{id:"dinner",t:"🍝 Dinner Plate",time:"Rest of day (about 6:00–7:00 PM)",goal:"Replenish glycogen and support recovery.",need:["carb","protein","veg","fat"],tip:"Include a carb, protein, vegetable, and healthy fat."}
+];
+const LBL={carb:"Carb",protein:"Protein",veg:"Veg/Fruit",fat:"Healthy fat"};
+const plates={};MEALS.forEach(m=>plates[m.id]=[]);
+let sel=null,filter="all";
+function chip(n,t,drag){const d=document.createElement("span");d.className="food "+t;d.textContent=n;
+ if(drag){d.draggable=true;d.ondragstart=e=>e.dataTransfer.setData("text",JSON.stringify([n,t]));
+  d.onclick=()=>{sel=[n,t];document.querySelectorAll("#foods .food").forEach(x=>x.style.borderColor="transparent");d.style.borderColor="#168a5f";};}
+ return d;}
+function has(items,k){return items.some(i=>i[1]==k||(i[1]=="mix"&&(k=="carb"||k=="protein")));}
+function status(m){
+ const items=plates[m.id];
+ if(!items.length)return {ok:false,msg:"👆 Add foods to this meal. Tip: "+m.tip};
+ const miss=m.need.filter(k=>!has(items,k));
+ if(miss.length)return {ok:false,msg:"⚠️ Still needs: "+miss.map(k=>LBL[k]).join(", ")+"."};
+ if((m.id=="pre"||m.id=="during")&&items.some(i=>i[1]=="protein"||i[1]=="fat"))return {ok:false,msg:"⚠️ Protein and fat digest slowly. Swap them for a carb."};
+ if(m.id=="during"&&items.length>3)return {ok:false,msg:"⚠️ Keep it small: 1 to 3 items."};
+ return {ok:true,msg:"✅ Nice work! This meal matches its timing and key nutrients."};
+}
+function render(){
+ const root=document.getElementById("meals");root.innerHTML="";let done=0;
+ MEALS.forEach(m=>{
+  const s=status(m);if(s.ok)done++;
+  const c=document.createElement("div");c.className="card meal"+(s.ok?" done":"");
+  c.innerHTML=`<h2>${m.t}</h2><div class="time">⏰ ${m.time}</div><div class="goal"><b>Goal:</b> ${m.goal}</div>
+  <div class="need"><b>Needs:</b> ${m.need.map(k=>`<span class="tag ${k}">${LBL[k]}</span>`).join("")}</div>`;
+  const d=document.createElement("div");d.className="drop"+(sel&&!plates[m.id].length?" ready":"");
+  if(!plates[m.id].length)d.innerHTML='<span class="ph">Drop foods here (or tap a food, then tap here)</span>';
+  plates[m.id].forEach((it,i)=>{const e=chip(it[0],it[1],false);e.onclick=ev=>{ev.stopPropagation();plates[m.id].splice(i,1);render();};d.appendChild(e);});
+  d.ondragover=e=>{e.preventDefault();d.classList.add("over")};d.ondragleave=()=>d.classList.remove("over");
+  d.ondrop=e=>{e.preventDefault();try{plates[m.id].push(JSON.parse(e.dataTransfer.getData("text")));render();}catch(x){}};
+  d.onclick=()=>{if(sel){plates[m.id].push(sel);render();}};
+  c.appendChild(d);
+  const fb=document.createElement("div");fb.className="fb"+(s.ok?" ok":"");fb.textContent=s.msg;c.appendChild(fb);
+  root.appendChild(c);});
+ document.getElementById("prog").textContent=done+" of "+MEALS.length+" meals complete";
+ document.querySelector("#bar i").style.width=(done/MEALS.length*100)+"%";
+}
+function checkAll(){
+ const done=MEALS.filter(m=>status(m).ok).length;
+ const todo=MEALS.filter(m=>!status(m).ok).map(m=>m.t);
+ document.getElementById("result").innerHTML=done==MEALS.length?"🎉 <b>Amazing! All "+MEALS.length+" meals match the timing and key nutrients.</b> Copy them to the whiteboard with drawings.":"<b>"+done+" of "+MEALS.length+" meals</b> are on track. Still to fix: "+todo.join(", ")+".";
+}
+function tabs(){const t=document.getElementById("tabs");t.innerHTML="";
+ [["all","All"],["carb","Carbs"],["mix","Carb + Protein"],["protein","Protein"],["veg","Veg/Fruit"],["fat","Fats"]].forEach(([k,l])=>{const b=document.createElement("button");b.textContent=l;b.className=filter==k?"on":"";b.onclick=()=>{filter=k;tabs();bank()};t.appendChild(b)});}
+function bank(){const b=document.getElementById("foods");b.innerHTML="";FOODS.filter(f=>filter=="all"||f[1]==filter).forEach(([n,t])=>b.appendChild(chip(n,t,true)));}
+tabs();bank();render();
+</script></body></html>
